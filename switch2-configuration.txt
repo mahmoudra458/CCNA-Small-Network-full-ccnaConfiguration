@@ -1,0 +1,185 @@
+Building configuration...
+
+  
+Current configuration : 3009 bytes
+!
+! Last configuration change at 21:36:38 UTC Wed Sep 22 2021
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+service compress-config
+!
+hostname S2
+!
+boot-start-marker
+boot-end-marker
+!
+!
+logging discriminator EXCESS severity drops 6 msg-body drops EXCESSCOLL 
+logging buffered 50000
+logging console discriminator EXCESS
+enable secret 5 $1$EDDS$w6tNJk9r0raZO1Qf7nLZc1
+!
+username admin secret 5 $1$FElS$39NBofBqWFvd5OrJkVVyZ0
+no aaa new-model
+!
+!
+!
+!
+!
+no ip icmp rate-limit unreachable
+!
+!
+!
+ip dhcp snooping vlan 3
+no ip dhcp snooping information option
+ip dhcp snooping
+no ip domain-lookup
+ip domain-name ccna-ptsa.com
+ip cef
+no ipv6 cef
+!
+!
+!
+spanning-tree mode rapid-pvst
+spanning-tree extend system-id
+!
+vlan internal allocation policy ascending
+!
+ip tcp synwait-time 5
+! 
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+interface Port-channel1
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 6
+ switchport mode trunk
+ ip dhcp snooping trust
+!
+interface Ethernet0/0
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet0/1
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 6
+ switchport mode trunk
+ channel-group 1 mode auto
+ ip dhcp snooping trust
+!
+interface Ethernet0/2
+ switchport trunk encapsulation dot1q
+ switchport trunk native vlan 6
+ switchport mode trunk
+ channel-group 1 mode auto
+ ip dhcp snooping trust
+!
+interface Ethernet0/3
+ switchport access vlan 3
+ switchport mode access
+ switchport port-security maximum 3
+ switchport port-security violation restrict
+ switchport port-security mac-address sticky
+ switchport port-security mac-address sticky 0050.7966.6800
+ switchport port-security
+ spanning-tree portfast edge
+ ip dhcp snooping limit rate 3
+!
+interface Ethernet1/0
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet1/1
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet1/2
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet1/3
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet2/0
+ switchport access vlan 5
+ shutdown 
+!
+interface Ethernet2/1
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet2/2
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet2/3
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet3/0
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet3/1
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet3/2
+ switchport access vlan 5
+ shutdown
+!
+interface Ethernet3/3
+ switchport access vlan 5
+ shutdown
+!
+interface Vlan1
+ no ip address
+ shutdown
+!
+interface Vlan4
+ ip address 10.19.8.99 255.255.255.248
+!
+ip default-gateway 10.19.8.97
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+!
+!
+!
+!         
+!
+control-plane
+!
+banner motd ^CUnauthorized Access this device is prohibitted!^C
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password 7 1214041F1F0419007E7E72
+ logging synchronous
+ login
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+line vty 0 4
+ login local
+ transport input ssh
+!
+!
+end

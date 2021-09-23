@@ -1,0 +1,142 @@
+Building configuration...
+
+Current configuration : 2249 bytes
+!
+! Last configuration change at 21:34:18 UTC Wed Sep 22 2021
+!
+version 15.2
+service timestamps debug datetime msec
+service timestamps log datetime msec
+service password-encryption
+!
+hostname R1
+!
+boot-start-marker
+boot-end-marker
+!
+!
+security passwords min-length 10
+enable secret 5 $1$vMn/$xNMu0R8Qtt26y5gQ0n.OF1
+!
+no aaa new-model
+no ip icmp rate-limit unreachable
+!
+!
+!         
+ip dhcp excluded-address 10.19.8.1 10.19.8.52
+ip dhcp excluded-address 10.19.8.65 10.19.8.84
+!
+ip dhcp pool CCNA-A
+ network 10.19.8.0 255.255.255.192
+ default-router 10.19.8.1 
+ domain-name ccna-a.com
+!
+ip dhcp pool CCNA-B
+ network 10.19.8.64 255.255.255.224
+ default-router 10.19.8.65 
+ domain-name ccna-b.com
+!
+!
+!
+no ip domain lookup
+ip domain name ccna-ptsa.com
+ip cef
+ipv6 unicast-routing
+ipv6 cef
+!
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+username admin secret 5 $1$9QfP$Dm4uyL6X534kcrjgGnvRi0
+!
+!
+!
+!
+!
+ip tcp synwait-time 5
+ip ssh version 2
+! 
+!
+!
+!
+!
+!
+!
+!         
+!
+interface Loopback0
+ ip address 209.165.201.1 255.255.255.0
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:DB8:ACAD:209::1/64
+!
+interface FastEthernet0/0
+ no ip address
+ duplex half
+!
+interface FastEthernet0/0.2
+ encapsulation dot1Q 2
+ ip address 10.19.8.1 255.255.255.192
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:DB8:ACAD:A::1/64
+!
+interface FastEthernet0/0.3
+ encapsulation dot1Q 3
+ ip address 10.19.8.65 255.255.255.224
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:DB8:ACAD:B::1/64
+!
+interface FastEthernet0/0.4
+ encapsulation dot1Q 4
+ ip address 10.19.8.97 255.255.255.248
+ ipv6 address FE80::1 link-local
+ ipv6 address 2001:DB8:ACAD:C::1/64
+!
+interface FastEthernet0/0.6
+!
+interface FastEthernet1/0
+ no ip address
+ shutdown
+ duplex full
+!
+ip forward-protocol nd
+!
+!
+no ip http server
+no ip http secure-server
+ip route 0.0.0.0 0.0.0.0 Loopback0
+!
+ipv6 route ::/0 Loopback0
+!
+!
+!         
+control-plane
+!
+banner motd ^CUnauthorized Access this device is prohiptted!^C
+!
+line con 0
+ exec-timeout 0 0
+ privilege level 15
+ password 7 060B0E2941411C1D514244
+ logging synchronous
+ login
+ stopbits 1
+line aux 0
+ exec-timeout 0 0
+ privilege level 15
+ logging synchronous
+ stopbits 1
+line vty 0 4
+ login local
+ transport input ssh
+line vty 5 15
+ login local
+ transport input ssh
+!         
+!
+end
